@@ -94,13 +94,17 @@ const Home = () => {
                 Explore Collection
               </motion.button>
             </Link>
-            <motion.button
-              className="btn-secondary w-full sm:w-auto border-white text-white hover:bg-white hover:text-primary"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Learn More
-            </motion.button>
+           
+           <Link to="/about">
+  <motion.button
+    className="btn-secondary w-full sm:w-auto border-white text-white hover:bg-white hover:text-primary"
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+  >
+    Learn More
+  </motion.button>
+</Link>
+
           </motion.div>
         </motion.div>
 

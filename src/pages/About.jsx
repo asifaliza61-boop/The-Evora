@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const About = () => {
@@ -635,13 +636,16 @@ const About = () => {
             transition={{ delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <motion.button
-              className="btn-accent"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <Link to="/shop">
+           <motion.button
+      className="btn-accent"
+        whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
             >
-              Shop Collection
+            Shop Collection
             </motion.button>
+          </Link>
+          <Link to="/contact">
             <motion.button
               className="btn-secondary border-white text-white hover:bg-white hover:text-primary"
               whileHover={{ scale: 1.05 }}
@@ -649,7 +653,11 @@ const About = () => {
             >
               Contact Us
             </motion.button>
+          </Link>
+          
+          
           </motion.div>
+
         </div>
       </motion.section>
     </div>

@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { products } from '../data/products';
 
-const Cart = () => {
+const Cart = ({ cartItems, updateQuantity, removeItem }) => {
   // Dummy cart items
-  const [cartItems, setCartItems] = useState([
-    { id: 1, product: products[0], quantity: 2, color: 'White', size: 'M' },
-    { id: 3, product: products[2], quantity: 1, color: 'Black', size: 'S' },
-    { id: 6, product: products[5], quantity: 1, color: 'Cream', size: 'M' },
-  ]);
+  // const [cartItems, setCartItems] = useState([
+  //   { id: 1, product: products[0], quantity: 2, color: 'White', size: 'M' },
+  //   { id: 3, product: products[2], quantity: 1, color: 'Black', size: 'S' },
+  //   { id: 6, product: products[5], quantity: 1, color: 'Cream', size: 'M' },
+  // ]);
 
   const [promoCode, setPromoCode] = useState('');
   const [discount, setDiscount] = useState(0);
@@ -19,17 +19,17 @@ const Cart = () => {
   const tax = (subtotal - discount) * 0.08;
   const total = subtotal + shipping + tax - discount;
 
-  const updateQuantity = (id, quantity) => {
-    if (quantity <= 0) {
-      removeItem(id);
-      return;
-    }
-    setCartItems(cartItems.map((item) => (item.id === id ? { ...item, quantity } : item)));
-  };
+  // const updateQuantity = (id, quantity) => {
+  //   if (quantity <= 0) {
+  //     removeItem(id);
+  //     return;
+  //   }
+  //   setCartItems(cartItems.map((item) => (item.id === id ? { ...item, quantity } : item)));
+  // };
 
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
+  // const removeItem = (id) => {
+  //   setCartItems(cartItems.filter((item) => item.id !== id));
+  // };
 
   const applyPromoCode = () => {
     if (promoCode === 'LUXURY20') {
@@ -142,7 +142,8 @@ const Cart = () => {
                       {/* Quantity Selector */}
                       <div className="flex items-center border border-gray w-fit">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          // onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity - 1, item.color, item.size)}
                           className="px-3 py-2 hover:bg-light transition-colors text-sm"
                         >
                           −
@@ -151,7 +152,8 @@ const Cart = () => {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          // onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity + 1, item.color, item.size)}
                           className="px-3 py-2 hover:bg-light transition-colors text-sm"
                         >
                           +
@@ -169,7 +171,7 @@ const Cart = () => {
 
                   {/* Remove Button */}
                   <motion.button
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeItem(item.id, item.color, item.size)}
                     className="flex-shrink-0 text-gray-dark hover:text-accent transition-colors p-2"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}

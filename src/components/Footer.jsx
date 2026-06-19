@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
+  
+  // ✅ NEW: Subscribe form state
+  const [email, setEmail] = useState('');
+  const [subscribeMessage, setSubscribeMessage] = useState('');
+  const [subscribeLoading, setSubscribeLoading] = useState(false);
 
   const footerLinks = [
     {
@@ -55,7 +60,38 @@ const Footer = () => {
     },
   };
 
-  // ✅ Click handler to navigate
+  // ✅ FIXED: Subscribe handler with validation
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      setSubscribeMessage('❌ Please enter a valid email');
+      setTimeout(() => setSubscribeMessage(''), 3000);
+      return;
+    }
+
+    setSubscribeLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      // Save to localStorage
+      const subscribers = JSON.parse(localStorage.getItem('evora-subscribers') || '[]');
+      if (!subscribers.includes(email)) {
+        subscribers.push(email);
+        localStorage.setItem('evora-subscribers', JSON.stringify(subscribers));
+      }
+
+      setSubscribeMessage('✓ Thanks for subscribing!');
+      setEmail('');
+      setSubscribeLoading(false);
+
+      setTimeout(() => setSubscribeMessage(''), 3000);
+    }, 800);
+  };
+
+  // Click handler to navigate
   const handleNavigation = (href) => {
     navigate(href);
   };
@@ -76,20 +112,35 @@ const Footer = () => {
             <p className="body-base mb-6 md:mb-8">
               Subscribe to our newsletter for exclusive offers and style tips.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 px-4 py-3 bg-secondary text-white placeholder-gray-dark focus:outline-none focus:ring-2 focus:ring-accent"
               />
-              <motion.button 
-                className="btn-accent px-8 py-3 cursor-pointer"
+              <motion.button
+                type="submit"
+                className="btn-accent px-8 py-3 cursor-pointer disabled:opacity-50"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                disabled={subscribeLoading}
               >
-                Subscribe
+                {subscribeLoading ? 'Subscribing...' : 'Subscribe'}
               </motion.button>
-            </div>
+            </form>
+            {subscribeMessage && (
+              <motion.p
+                className={`mt-3 text-sm ${
+                  subscribeMessage.includes('Thanks') ? 'text-accent' : 'text-red-400'
+                }`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                {subscribeMessage}
+              </motion.p>
+            )}
           </div>
         </div>
       </motion.div>
