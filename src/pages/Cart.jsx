@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { products } from '../data/products';
+// import { products } from '../data/products';
 
 const Cart = ({ cartItems, updateQuantity, removeItem }) => {
   // Dummy cart items
@@ -12,12 +12,24 @@ const Cart = ({ cartItems, updateQuantity, removeItem }) => {
   // ]);
 
   const [promoCode, setPromoCode] = useState('');
-  const [discount, setDiscount] = useState(0);
+  // const [discount, setDiscount] = useState(0);
+const [discountRate, setDiscountRate] = useState(0);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const shipping = subtotal > 150 ? 0 : 15;
-  const tax = (subtotal - discount) * 0.08;
-  const total = subtotal + shipping + tax - discount;
+
+    const discount = subtotal * discountRate;
+const shipping = subtotal > 150 ? 0 : 15;
+
+const taxableAmount = Math.max(0, subtotal - discount);
+const tax = taxableAmount * 0.08;
+
+const total = taxableAmount + shipping + tax;
+
+
+
+  // const shipping = subtotal > 150 ? 0 : 15;
+  // const tax = (subtotal - discount) * 0.08;
+  // const total = subtotal + shipping + tax - discount;
 
   // const updateQuantity = (id, quantity) => {
   //   if (quantity <= 0) {
@@ -32,14 +44,14 @@ const Cart = ({ cartItems, updateQuantity, removeItem }) => {
   // };
 
   const applyPromoCode = () => {
-    if (promoCode === 'LUXURY20') {
-      setDiscount(subtotal * 0.2);
-    } else if (promoCode === 'WELCOME10') {
-      setDiscount(subtotal * 0.1);
-    } else {
-      setDiscount(0);
-      alert('Invalid promo code');
-    }
+   if (promoCode === 'LUXURY20') {
+  setDiscountRate(0.2);
+} else if (promoCode === 'WELCOME10') {
+  setDiscountRate(0.1);
+} else {
+  setDiscountRate(0);
+  alert('Invalid promo code');
+}
   };
 
   const containerVariants = {

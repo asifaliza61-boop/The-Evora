@@ -33,9 +33,9 @@ const Footer = () => {
       title: 'Company',
       links: [
         { label: 'About Us', href: '/about' },
-        { label: 'Careers', href: '/about' },
-        { label: 'Press', href: '/about' },
-        { label: 'Blog', href: '/' },
+        { label: 'Careers', href: '/careers' },
+        { label: 'Press', href: '/press' },
+        { label: 'Blog', href: '/blog' },
       ],
     },
   ];
@@ -227,19 +227,19 @@ const Footer = () => {
             </p>
             <div className="flex gap-6 flex-wrap justify-center md:justify-end">
               <button
-                onClick={() => handleNavigation('/')}
+                onClick={() => handleNavigation('/privacy')}
                 className="body-sm text-gray-dark hover:text-accent transition-colors bg-transparent border-none cursor-pointer p-0 hover:underline"
               >
                 Privacy Policy
               </button>
               <button
-                onClick={() => handleNavigation('/')}
+                onClick={() => handleNavigation('/terms')}
                 className="body-sm text-gray-dark hover:text-accent transition-colors bg-transparent border-none cursor-pointer p-0 hover:underline"
               >
                 Terms of Service
               </button>
               <button
-                onClick={() => handleNavigation('/')}
+                onClick={() => handleNavigation('/cookies')}
                 className="body-sm text-gray-dark hover:text-accent transition-colors bg-transparent border-none cursor-pointer p-0 hover:underline"
               >
                 Cookies

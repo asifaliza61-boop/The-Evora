@@ -132,6 +132,7 @@ export const products = [
     price: 599.99,
     originalPrice: 699.99,
     image: "https://plus.unsplash.com/premium_photo-1732706751229-7ff87d2cf31d?q=80&w=721&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      category: "Accessories",
     description: "18K gold plated luxury jewelry. Timeless elegance in every piece.",
     colors: ["Gold"],
     sizes: ["One Size"],

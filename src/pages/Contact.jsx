@@ -9,6 +9,7 @@ const Contact = () => {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,6 +21,26 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const trimmedData = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      subject: formData.subject,
+      message: formData.message.trim(),
+    };
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (
+      !trimmedData.name ||
+      !emailRegex.test(trimmedData.email) ||
+      !trimmedData.subject ||
+      !trimmedData.message
+    ) {
+      setSubmitted(false);
+      setFormError('Please complete every field with a valid email address.');
+      return;
+    }
+
+    setFormError('');
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
@@ -211,6 +232,16 @@ const Contact = () => {
               viewport={{ once: true }}
             >
               <form onSubmit={handleSubmit} className="space-y-6">
+                {formError && (
+                  <motion.p
+                    className="text-sm text-red-600 bg-white border border-red-200 px-4 py-3"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    {formError}
+                  </motion.p>
+                )}
+
                 {/* Name Field */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}

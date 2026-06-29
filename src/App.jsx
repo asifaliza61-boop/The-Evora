@@ -8,41 +8,50 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import InfoPage from './pages/InfoPage';
 import './index.css';
 
 function App() {
-  // const [cartCount, setCartCount] = useState(3);
-const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem('cartItems');
+      const parsedCart = savedCart ? JSON.parse(savedCart) : [];
+      return Array.isArray(parsedCart) ? parsedCart : [];
+    } catch {
+      return [];
+    }
+  });
 
-const updateQuantity = (id, quantity, color, size) => {
-  setCartItems((prev) =>
-    prev.map((item) =>
-      item.id === id &&
-      item.color === color &&
-      item.size === size
-        ? { ...item, quantity: Math.max(1, quantity) }
-        : item
-    )
-  );
-};
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-const removeItem = (id, color, size) => {
-  setCartItems((prev) =>
-    prev.filter(
-      (item) =>
-        !(item.id === id && item.color === color && item.size === size)
-    )
-  );
-};
+  const updateQuantity = (id, quantity, color, size) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id && item.color === color && item.size === size
+          ? { ...item, quantity: Math.max(1, quantity) }
+          : item
+      )
+    );
+  };
 
+  const removeItem = (id, color, size) => {
+    setCartItems((prev) =>
+      prev.filter(
+        (item) =>
+          !(item.id === id && item.color === color && item.size === size)
+      )
+    );
+  };
 
-
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
 
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-white">
-        <Navbar cartCount={cartItems.length} />
+        <Navbar cartCount={cartCount} />
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -79,6 +88,7 @@ const removeItem = (id, color, size) => {
             {/* <Route path="/cart" element={<Cart/>} /> */}
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/:slug" element={<InfoPage />} />
           </Routes>
         </main>
         <Footer />

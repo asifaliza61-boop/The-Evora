@@ -46,6 +46,10 @@ const ProductDetail = ({ cartItems, setCartItems }) => {
     : 0;
 
   const handleAddToCart = () => {
+    if (!product.inStock) {
+      return;
+    }
+
     const cartProduct = {
       id: product.id,
       product,
@@ -64,7 +68,10 @@ const ProductDetail = ({ cartItems, setCartItems }) => {
 
       if (existingIndex !== -1) {
         const updated = [...prevItems];
-        updated[existingIndex].quantity += quantity;
+        updated[existingIndex] = {
+        ...updated[existingIndex],
+           quantity: updated[existingIndex].quantity + quantity,
+           };
         return updated;
       }
 
@@ -159,9 +166,14 @@ const ProductDetail = ({ cartItems, setCartItems }) => {
             {/* ADD TO CART */}
             <button
               onClick={handleAddToCart}
-              className="bg-black text-white px-6 py-3"
+              className="bg-black text-white px-6 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!product.inStock}
             >
-              {addedToCart ? 'Added!' : 'Add to Cart'}
+              {!product.inStock
+                ? "Out of Stock"
+                : addedToCart
+                ? "Added!"
+                : "Add to Cart"}
             </button>
 
           </div>
